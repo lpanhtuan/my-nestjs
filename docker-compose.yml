@@ -1,0 +1,44 @@
+version: 'latest'
+services:
+    web:
+        container_name: web
+        build: .
+        ports:
+            - '3306:3333'
+        environment:
+            - MYSQL_HOST=localhost
+            - MYSQL_PORT=3333
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=root
+            - MYSQL_DB=db_nests
+            - PORT=3306
+            - JWT_SECRET=haha
+            - JWT_EXPIRATION_TIME=5000
+            - JWT_ACCESS_TOKEN_SECRET=bHbiRSjKS4GdMYJ
+            - JWT_ACCESS_TOKEN_EXPIRATION_TIME=604800
+            - JWT_REFRESH_TOKEN_SECRET=GsFpblNbkaCrajX
+            - JWT_REFRESH_TOKEN_EXPIRATION_TIME=2592000
+        networks:
+            - nesjs-network
+        restart: unless-stopped
+    db:
+        container_name: mysql
+        image: mysql:latest
+        ports:
+            - '3307:3333'
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+        networks:
+            - nesjs-network
+    microservice-db:
+        container_name: microservice-db
+        image: mysql:latest
+        ports:
+            - '3308:3333'
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+        networks:
+            - nesjs-network
+networks:
+    nesjs-network:
+        driver: bridge
